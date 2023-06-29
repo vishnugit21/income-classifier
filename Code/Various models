@@ -1,1 +1,64 @@
+import pandas as pd
+import numpy as np
+import matplotlib as plt
+url="https://drive.google.com/file/d/1XYTUehdFdpb4swvSuJWLniW7ufRHXCHv/view?usp=sharing"
+url='https://drive.google.com/uc?id='+url.split('/')[-2]
+df=pd.read_csv(url)
+df.columns = df.columns.str.strip()
+df.rename(columns={'39':'Age','State-gov':'Workclass','77516':'Fnlwgt','Bachelors':'Education','13':'education_num','Never-married':'marital_status','Adm-clerical':'occupation','Not-in-family':'relationship','White':'race','Male':'sex','2174':'capital_gain','0':'capital_loss','40':'hours_per_week','United-States':'native_country','<=50K':'income'},inplace=True)
+df
+## Data Preprocessing
+from sklearn.preprocessing import LabelEncoder
+p1=LabelEncoder()
+df["Workclass"]=p1.fit_transform(df["Workclass"])
+df["Education"]=p1.fit_transform(df["Education"])
+df["marital_status"]=p1.fit_transform(df["marital_status"])
+df["relationship"]=p1.fit_transform(df["relationship"])
+df["occupation"]=p1.fit_transform(df["occupation"])
+df["race"]=p1.fit_transform(df["race"])
+df["sex"]=p1.fit_transform(df["sex"])
+df["income"]=p1.fit_transform(df["income"])
+df["native_country"]=p1.fit_transform(df["native_country"])
+drop the null
+values df.dropna() 
+x=df.iloc[:,:-1]#seting x
+y=df['income']#setting y
+print(x.shape)
+print(y.shape)
+print(type(x))
+print(type(y))
+# To train and test
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test =train_test_split(x, y,test_size=0.2)
 
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import confusion_matrix,classification_report
+## Defining function to calculate confusion matrix and classification report for different models
+def eval(y_test,y_predict):
+    cm=confusion_matrix(y_test,y_predict)
+    print("Confusion matrix ")
+    print(cm)
+    print("Classification report ")
+    print(classification_report(y_test,y_predict))
+    
+   m1=DecisionTreeClassifier(criterion='gini',max_depth=3,min_samples_split=15)
+m1.fit(x_train,y_train)
+y_pred1=m1.predict(x_test)
+eval(y_test,y_pred1)
+m2=RandomForestClassifier()
+m2.fit(x_train,y_train)
+y_pred2=m2.predict(x_test)
+eval(y_test,y_pred2)
+
+ m3=LogisticRegression(solver='lbfgs', max_iter=10000 )
+m3.fit(x_train,y_train)m4=KNeighborsClassifier(n_neighbors=41)
+m4.fit(x_train,y_train)
+
+m5=SVC()
+m5.fit(x_train,y_train)
+
+score(m5)
