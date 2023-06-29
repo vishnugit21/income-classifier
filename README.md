@@ -3,7 +3,7 @@ Accuracy of different Models
  <br></br>
 1.Decision tree -0.83
  <br></br>
-2.Random Forest Classifier-0.85
+   2.Random Forest Classifier-0.85
  <br></br>
  3.Logistic Regression-0.79
  <br></br>
